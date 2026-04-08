@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Cadastro de Maçom</h2>
+
+<form method="POST">
+
+<ul class="nav nav-tabs">
+
+<li class="nav-item">
+<button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#dados">Dados</button>
+</li>
+
+<li class="nav-item">
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#contato">Contato</button>
+</li>
+
+<li class="nav-item">
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#endereco">Endereço</button>
+</li>
+
+<li class="nav-item">
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#documentos">Documentos</button>
+</li>
+
+<li class="nav-item">
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#maconico">Maçônico</button>
+</li>
+
+<li class="nav-item">
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#familiares">Familiares</button>
+</li>
+
+</ul>
+
+<div class="tab-content mt-3">
+
+<!-- DADOS -->
+<div class="tab-pane fade show active" id="dados">
+<label>Nome</label><input name="nome" class="form-control mb-2">
+<label>CIM</label><input name="cim" class="form-control mb-2">
+<label>Data Nascimento</label><input name="data_nascimento" class="form-control mb-2">
+<label>Naturalidade</label><input name="naturalidade" class="form-control mb-2">
+<label>Nacionalidade</label><input name="nacionalidade" class="form-control mb-2">
+<label>Estado Civil</label><input name="estado_civil" class="form-control mb-2">
+<label>Sexo</label><input name="sexo" class="form-control mb-2">
+<label>Pai</label><input name="nome_pai" class="form-control mb-2">
+<label>Mãe</label><input name="nome_mae" class="form-control mb-2">
+<label>Escolaridade</label><input name="escolaridade" class="form-control mb-2">
+<label>Cônjuge</label><input name="conjuge" class="form-control mb-2">
+<label>Data Casamento</label><input type="date" name="data_casamento" class="form-control mb-2">
+</div>
+
+<!-- CONTATO -->
+<div class="tab-pane fade" id="contato">
+<label>Telefone</label><input name="telefone" class="form-control mb-2">
+<label>Celular</label><input name="celular" class="form-control mb-2">
+<label>WhatsApp</label><input name="whatsapp" class="form-control mb-2">
+<label>Email</label><input name="email" class="form-control mb-2">
+</div>
+
+<!-- ENDEREÇO -->
+<div class="tab-pane fade" id="endereco">
+<label>CEP</label><input id="cep" name="cep" class="form-control mb-2">
+<label>Rua</label><input id="rua" name="rua" class="form-control mb-2">
+<label>Número</label><input name="numero" class="form-control mb-2">
+<label>Bairro</label><input id="bairro" name="bairro" class="form-control mb-2">
+<label>Cidade</label><input id="cidade" name="cidade" class="form-control mb-2">
+<label>Estado</label><input id="estado" name="estado" class="form-control mb-2">
+<label>País</label><input name="pais" class="form-control mb-2" value="Brasil">
+</div>
+
+<!-- DOCUMENTOS -->
+<div class="tab-pane fade" id="documentos">
+<label>CPF</label><input name="cpf" class="form-control mb-2">
+<label>RG</label><input name="rg" class="form-control mb-2">
+<label>Título Eleitoral</label><input name="titulo" class="form-control mb-2">
+</div>
+
+<!-- MAÇÔNICO -->
+<div class="tab-pane fade" id="maconico">
+<label>Situação</label>
+<select name="situacao" class="form-select mb-2">
+<option value="" selected disabled>Selecione...</option>
+<option value="REGULAR_ATIVO">Regular Ativo</option>
+<option value="REGULAR_INATIVO">Regular Inativo</option>
+</select>
+
+<label>Forma</label>
+<select name="forma" class="form-select mb-2">
+<option value="" selected disabled>Selecione...</option>
+<option value="INICIACAO">Iniciação</option>
+<option value="FILIACAO">Filiação</option>
+</select>
+
+<label>Data Admissão</label>
+<input type="date" name="data_admissao" class="form-control mb-2">
+</div>
+
+<!-- FAMILIARES -->
+<div class="tab-pane fade" id="familiares">
+<label>Nome</label><input name="familiar_nome" class="form-control mb-2">
+<label>CPF</label><input name="familiar_cpf" class="form-control mb-2">
+<label>RG</label><input name="familiar_rg" class="form-control mb-2">
+<label>Parentesco</label>
+<select name="familiar_parentesco" class="form-select mb-2">
+<option value="" selected disabled>Selecione...</option>
+<option value="FILHO">Filho</option>
+<option value="ESPOSA">Esposa</option>
+</select>
+<label>Nascimento</label><input type="date" name="familiar_nascimento" class="form-control mb-2">
+<label>Telefone</label><input name="familiar_telefone" class="form-control mb-2">
+<label>Celular</label><input name="familiar_celular" class="form-control mb-2">
+<label>Email</label><input name="familiar_email" class="form-control mb-2">
+</div>
+
+</div>
+
+<button class="btn btn-success mt-3">Salvar</button>
+
+</form>
+
+{% endblock %}
