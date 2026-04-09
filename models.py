@@ -138,6 +138,9 @@ class Candidato(db.Model):
     contatos = db.relationship('Contato', backref='candidato', lazy=True)
     enderecos = db.relationship('Endereco', backref='candidato', lazy=True)
     documentos = db.relationship('DocumentoArquivo', backref='candidato', lazy=True)
+    
+    ativo = db.Column(db.Boolean, default=True)
+    data_exclusao = db.Column(db.DateTime, nullable=True)
 
 
 # =========================

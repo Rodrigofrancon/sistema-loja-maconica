@@ -197,7 +197,13 @@ def candidato():
 # =========================
 @main.route('/candidatos')
 def candidatos():
-    candidatos = Candidato.query.all()
+    candidatos = Candidato.query.filter_by(ativo=True).all()
+    return render_template('candidatos.html', candidatos=candidatos)
+
+
+@main.route('/candidatos-inativos')
+def candidatos_inativos():
+    candidatos = Candidato.query.filter_by(ativo=False).all()
     return render_template('candidatos.html', candidatos=candidatos)
 
 # =========================
@@ -246,6 +252,24 @@ def editar_candidato(id):
         return redirect('/candidatos')
 
     return render_template('editar_candidato.html', candidato=candidato)
+
+# =========================
+# EXCLUIR CANDIDATO
+# =========================
+@main.route('/excluir-candidato/<int:id>')
+def excluir_candidato(id):
+    candidato = Candidato.query.get_or_404(id)
+
+    
+    Contato.query.filter_by(candidato_id=id).delete()
+    Endereco.query.filter_by(candidato_id=id).delete()
+    DocumentoArquivo.query.filter_by(candidato_id=id).delete()
+
+    
+    db.session.delete(candidato)
+    db.session.commit()
+
+    return redirect('/candidatos')
 
 # =========================
 # EDITAR MAÇOM
@@ -380,3 +404,5 @@ def download(id):
         return "Arquivo não encontrado", 404
 
     return send_file(doc.caminho, as_attachment=True)
+
+

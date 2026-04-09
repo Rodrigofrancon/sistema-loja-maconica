@@ -67,10 +67,20 @@
                     <td>
                         <a href="/editar-candidato/{{ c.id }}" class="btn btn-warning btn-sm">Editar</a>
 
+                        {% if c.ativo %}
+                            <a href="/excluir-candidato/{{ c.id }}" class="btn btn-danger btn-sm">
+                                Inativar
+                            </a>
+                        {% else %}
+                            <a href="/restaurar-candidato/{{ c.id }}" class="btn btn-success btn-sm">
+                                Restaurar
+                            </a>
+                        {% endif %}
+                        
                         <a href="/excluir-candidato/{{ c.id }}"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('Excluir candidato?')">
-                           Excluir
+                            class="btn btn-danger btn-sm"
+                            onclick="return confirm('Tem certeza que deseja excluir este candidato?')">
+                                    Excluir
                         </a>
                     </td>
                 </tr>
