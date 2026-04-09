@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-0">Maçons cadastrados</h2>
+        <small class="text-muted">Gestão de membros da loja</small>
+    </div>
+
+    <a href="/cadastro" class="btn btn-primary">
+        + Novo Cadastro
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+<div class="card-body p-0">
+
+<table class="table table-hover align-middle mb-0">
+
+<thead class="table-dark text-center">
+<tr>
+<th class="text-start">Nome</th>
+<th>CIM</th>
+<th>Situação</th>
+<th>Contato</th>
+<th>Cidade</th>
+<th>Arquivos</th>
+<th style="width: 200px;">Ações</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for p in pessoas %}
+<tr>
+
+<td class="fw-semibold">
+    {{ p.nome }}
+</td>
+
+<td class="text-center">
+    {{ p.cim or '-' }}
+</td>
+
+<td class="text-center">
+    {% if p.maconico and p.maconico.situacao == 'REGULAR_ATIVO' %}
+        <span class="badge bg-success">Ativo</span>
+    {% elif p.maconico %}
+        <span class="badge bg-warning text-dark">
+            {{ p.maconico.situacao }}
+        </span>
+    {% else %}
+        <span class="badge bg-secondary">-</span>
+    {% endif %}
+</td>
+
+<td class="text-center">
+    {% if p.contatos and p.contatos[0].celular %}
+        <small>{{ p.contatos[0].celular }}</small>
+    {% else %}
+        <span class="text-muted">-</span>
+    {% endif %}
+</td>
+
+<td class="text-center">
+    {% if p.enderecos and p.enderecos[0].cidade %}
+        <small>{{ p.enderecos[0].cidade }}</small>
+    {% else %}
+        <span class="text-muted">-</span>
+    {% endif %}
+</td>
+
+<!-- ARQUIVOS -->
+<td class="text-center">
+    {% if p.documentos %}
+        <span class="badge bg-info">
+            {{ p.documentos|length }}
+        </span>
+    {% else %}
+        <span class="text-muted">0</span>
+    {% endif %}
+</td>
+
+<td>
+
+<div class="d-flex justify-content-center gap-1 flex-wrap">
+
+    <a href="/editar/{{ p.id }}" 
+       class="btn btn-warning btn-sm">       
+    </a>
+
+    <a href="/excluir/{{ p.id }}"
+       class="btn btn-danger btn-sm"
+       onclick="return confirm('Tem certeza que deseja excluir?')">
+       🗑
+    </a>
+
+    <a href="/documentos/{{ p.id }}"
+       class="btn btn-secondary btn-sm"
+       title="Ver documentos">
+    </a>
+
+</div>
+
+</td>
+
+</tr>
+
+{% else %}
+<tr>
+<td colspan="7" class="text-center p-4 text-muted">
+    Nenhum maçom cadastrado
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+{% endblock %}

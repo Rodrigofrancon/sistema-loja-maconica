@@ -2,70 +2,46 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Maçons cadastrados</h2>
-    <a href="/cadastro" class="btn btn-primary">+ Novo Cadastro</a>
-</div>
+<div class="text-center">
 
-<div class="card shadow-sm">
-    <div class="card-body">
+    <h1 class="mb-5">Sistema Loja Maçônica</h1>
 
-        <table class="table table-hover table-bordered align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>Nome</th>
-                    <th>CIM</th>
-                    <th>Situação</th>
-                    <th>Celular</th>
-                    <th>Cidade</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="row justify-content-center">
 
-                {% for p in pessoas %}
-                <tr>
-                    <td>{{ p.nome }}</td>
-                    <td>{{ p.cim }}</td>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3>🧿 Maçons</h3>
 
-                    <td>
-                        {% if p.maconico %}
-                            <span class="badge bg-success">{{ p.maconico.situacao }}</span>
-                        {% endif %}
-                    </td>
+                    <a href="/macons" class="btn btn-dark w-100 mb-2">
+                        Consultar
+                    </a>
 
-                    <td>
-                        {% if p.contatos %}
-                            {{ p.contatos[0].celular }}
-                        {% endif %}
-                    </td>
+                    <a href="/cadastro" class="btn btn-primary w-100">
+                        Novo Cadastro
+                    </a>
+                </div>
+            </div>
+        </div>
 
-                    <td>
-                        {% if p.enderecos %}
-                            {{ p.enderecos[0].cidade }}
-                        {% endif %}
-                    </td>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3>📋 Candidatos</h3>
 
-                    <td>
-                        <a href="/editar/{{ p.id }}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="/candidatos" class="btn btn-dark w-100 mb-2">
+                        Consultar
+                    </a>
 
-                        <a href="/excluir/{{ p.id }}" 
-                            class="btn btn-sm btn-danger"
-                            onclick="return confirm('Tem certeza que deseja excluir?')">
-                            Excluir
-                        </a>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="6" class="text-center">Nenhum cadastro encontrado</td>
-                </tr>
-                {% endfor %}
-
-            </tbody>
-        </table>
+                    <a href="/candidato" class="btn btn-warning w-100">
+                        Novo Cadastro
+                    </a>
+                </div>
+            </div>
+        </div>
 
     </div>
+
 </div>
 
 {% endblock %}

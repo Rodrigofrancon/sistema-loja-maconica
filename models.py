@@ -23,27 +23,10 @@ class Pessoa(db.Model):
     data_casamento = db.Column(db.String(20))
 
     # RELACIONAMENTOS
-    documento = db.relationship('Documento', backref='pessoa', uselist=False)
     maconico = db.relationship('DadosMaconicos', backref='pessoa', uselist=False)
-
-    # CONTATOS (AGORA LISTA)
     contatos = db.relationship('Contato', backref='pessoa', lazy=True)
-
     familiares = db.relationship('Familiar', backref='pessoa', lazy=True)
-
-
-# =========================
-# Documentos
-# =========================
-class Documento(db.Model):
-    __tablename__ = 'documento'
-
-    id = db.Column(db.Integer, primary_key=True)
-    pessoa_id = db.Column(db.Integer, db.ForeignKey('pessoa.id'), nullable=False)
-
-    cpf = db.Column(db.String(20), unique=True, nullable=True)
-    rg = db.Column(db.String(20))
-    titulo_eleitoral = db.Column(db.String(20))
+    documentos = db.relationship('DocumentoArquivo', backref='pessoa', lazy=True)
 
 
 # =========================
@@ -73,11 +56,9 @@ class Familiar(db.Model):
     parentesco = db.Column(db.String(50))
     data_nascimento = db.Column(db.String(20))
 
-    # 🔥 DOCUMENTOS
     cpf = db.Column(db.String(20), nullable=True)
     rg = db.Column(db.String(20))
 
-    # 🔗 RELACIONAMENTO COM CONTATO
     contatos = db.relationship('Contato', backref='familiar', lazy=True)
 
 
@@ -89,19 +70,19 @@ class Contato(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    # RELAÇÃO FLEXÍVEL
     pessoa_id = db.Column(db.Integer, db.ForeignKey('pessoa.id'), nullable=True)
     familiar_id = db.Column(db.Integer, db.ForeignKey('familiar.id'), nullable=True)
+    candidato_id = db.Column(db.Integer, db.ForeignKey('candidato.id'), nullable=True)
 
     telefone = db.Column(db.String(20))
     celular = db.Column(db.String(20))
     whatsapp = db.Column(db.String(20))
     email = db.Column(db.String(100))
 
-# =========================
-# ENDERECO (COMPARTILHADO)
-# =========================
 
+# =========================
+# ENDEREÇO (COMPARTILHADO)
+# =========================
 class Endereco(db.Model):
     __tablename__ = 'endereco'
 
@@ -109,6 +90,7 @@ class Endereco(db.Model):
 
     pessoa_id = db.Column(db.Integer, db.ForeignKey('pessoa.id'), nullable=True)
     familiar_id = db.Column(db.Integer, db.ForeignKey('familiar.id'), nullable=True)
+    candidato_id = db.Column(db.Integer, db.ForeignKey('candidato.id'), nullable=True)
 
     rua = db.Column(db.String(150))
     numero = db.Column(db.String(20))
@@ -116,4 +98,43 @@ class Endereco(db.Model):
     cidade = db.Column(db.String(100))
     estado = db.Column(db.String(50))
     cep = db.Column(db.String(20))
-    pais = db.Column(db.String(100))  # 🔥 NOVO
+    pais = db.Column(db.String(100))
+
+
+# =========================
+# CANDIDATO
+# =========================
+class Candidato(db.Model):
+    __tablename__ = 'candidato'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    nome = db.Column(db.String(150), nullable=False)
+    cpf = db.Column(db.String(20))
+    rg = db.Column(db.String(20))
+    titulo = db.Column(db.String(20))
+
+    data_candidatura = db.Column(db.String(20))
+    situacao = db.Column(db.String(50))
+
+    contatos = db.relationship('Contato', backref='candidato', lazy=True)
+    enderecos = db.relationship('Endereco', backref='candidato', lazy=True)
+    documentos = db.relationship('DocumentoArquivo', backref='candidato', lazy=True)
+
+
+# =========================
+# DOCUMENTOS (ÚNICO MODELO)
+# =========================
+class DocumentoArquivo(db.Model):
+    __tablename__ = 'documento_arquivo'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    pessoa_id = db.Column(db.Integer, db.ForeignKey('pessoa.id'), nullable=True)
+    candidato_id = db.Column(db.Integer, db.ForeignKey('candidato.id'), nullable=True)
+
+    nome = db.Column(db.String(150))  # descrição livre
+    data_documento = db.Column(db.Date)
+
+    nome_arquivo = db.Column(db.String(200))
+    caminho = db.Column(db.String(300))

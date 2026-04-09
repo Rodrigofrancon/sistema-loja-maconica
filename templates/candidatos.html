@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Candidatos</h2>
+    <a href="/candidato" class="btn btn-primary">+ Novo Candidato</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Data Candidatura</th>
+                    <th>Situação</th>
+                    <th>Celular</th>
+                    <th>Cidade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for c in candidatos %}
+                <tr>
+                    <td>{{ c.nome }}</td>
+                    <td>{{ c.cpf or '-' }}</td>
+
+                    <td>
+                        {{ c.data_candidatura or '-' }}
+                    </td>
+
+                    <td>
+                        {% if c.situacao == 'EM_ANALISE' %}
+                            <span class="badge bg-primary">Em análise</span>
+                        {% elif c.situacao == 'LIVRO_AMARELO' %}
+                            <span class="badge bg-warning text-dark">Livro Amarelo</span>
+                        {% elif c.situacao == 'LIVRO_NEGRO' %}
+                            <span class="badge bg-dark">Livro Negro</span>
+                        {% elif c.situacao == 'CANCELADO' %}
+                            <span class="badge bg-danger">Cancelado</span>
+                        {% else %}
+                            <span class="badge bg-secondary">-</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if c.contatos %}
+                            {{ c.contatos[0].celular or '-' }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if c.enderecos %}
+                            {{ c.enderecos[0].cidade or '-' }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a href="#" class="btn btn-warning btn-sm">Editar</a>
+
+                        <a href="/excluir-candidato/{{ c.id }}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Excluir candidato?')">
+                           Excluir
+                        </a>
+                    </td>
+                </tr>
+
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">
+                        Nenhum candidato cadastrado
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

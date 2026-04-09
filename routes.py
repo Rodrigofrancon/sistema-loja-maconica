@@ -1,28 +1,35 @@
-from flask import Blueprint, render_template, request, redirect
-from models import db, Pessoa, Documento, DadosMaconicos, Familiar, Contato, Endereco
+from flask import Blueprint, render_template, request, redirect, current_app
+from models import db, Pessoa, DadosMaconicos, Familiar, Contato, Endereco, Candidato, DocumentoArquivo 
+from werkzeug.utils import secure_filename
+import os
+from datetime import datetime
 
 main = Blueprint('main', __name__)
 
-
 # =========================
-# LISTAGEM
+# HOME
 # =========================
 @main.route('/')
-def index():
-    pessoas = Pessoa.query.all()
-    return render_template('index.html', pessoas=pessoas)
+def home():
+    return render_template('index.html')
 
 
 # =========================
-# ➕ CADASTRO
+# LISTA MAÇONS
+# =========================
+@main.route('/macons')
+def macons():
+    pessoas = Pessoa.query.all()
+    return render_template('macons.html', pessoas=pessoas)
+
+
+# =========================
+# CADASTRO MAÇOM
 # =========================
 @main.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
 
-        # =========================
-        # PESSOA
-        # =========================
         pessoa = Pessoa(
             nome=request.form['nome'],
             data_nascimento=request.form.get('data_nascimento'),
@@ -41,50 +48,26 @@ def cadastro():
         db.session.add(pessoa)
         db.session.commit()
 
-        # =========================
-        # DOCUMENTO
-        # =========================
-        cpf = request.form.get('cpf') or None
-
-        documento = Documento(
-            pessoa_id=pessoa.id,
-            cpf=cpf,
-            rg=request.form.get('rg'),
-            titulo_eleitoral=request.form.get('titulo')
-        )
-
-        db.session.add(documento)
-
-        # =========================
-        #CONTATO
-        # =========================
-        if request.form.get('telefone') or request.form.get('celular') or request.form.get('email'):
-            contato_pessoa = Contato(
+        # CONTATO
+        if request.form.get('telefone') or request.form.get('celular'):
+            db.session.add(Contato(
                 pessoa_id=pessoa.id,
                 telefone=request.form.get('telefone'),
                 celular=request.form.get('celular'),
-                whatsapp=request.form.get('whatsapp'),
                 email=request.form.get('email')
-            )
-            db.session.add(contato_pessoa)
+            ))
 
-        # =========================
         # DADOS MAÇÔNICOS
-        # =========================
-        dados = DadosMaconicos(
+        db.session.add(DadosMaconicos(
             pessoa_id=pessoa.id,
             situacao=request.form.get('situacao'),
             forma_admissao=request.form.get('forma'),
             data_admissao=request.form.get('data_admissao')
-        )
+        ))
 
-        db.session.add(dados)
-
-        # =========================
-        #ENDEREÇO 
-        # =========================
-        if request.form.get('cep') or request.form.get('rua'):
-            endereco = Endereco(
+        # ENDEREÇO
+        if request.form.get('cep'):
+            db.session.add(Endereco(
                 pessoa_id=pessoa.id,
                 cep=request.form.get('cep'),
                 rua=request.form.get('rua'),
@@ -93,48 +76,38 @@ def cadastro():
                 cidade=request.form.get('cidade'),
                 estado=request.form.get('estado'),
                 pais=request.form.get('pais')
-            )
-            db.session.add(endereco)
+            ))
 
-        # =========================
-        # FAMILIAR
-        # =========================
-        if request.form.get('familiar_nome'):
-            familiar = Familiar(
+        # 📄 DOCUMENTO (UPLOAD)
+        file = request.files.get('arquivo')
+
+        if file and file.filename:
+            filename = secure_filename(file.filename)
+
+            pasta = os.path.join(current_app.config['UPLOAD_FOLDER'], 'macons')
+            os.makedirs(pasta, exist_ok=True)
+
+            caminho = os.path.join(pasta, filename)
+            file.save(caminho)
+
+            data_doc = request.form.get('doc_data')
+
+            db.session.add(DocumentoArquivo(
                 pessoa_id=pessoa.id,
-                nome=request.form.get('familiar_nome'),
-                parentesco=request.form.get('familiar_parentesco'),
-                data_nascimento=request.form.get('familiar_nascimento'),
-                cpf=request.form.get('familiar_cpf'),
-                rg=request.form.get('familiar_rg')
-            )
+                nome=request.form.get('doc_nome'),
+                data_documento=datetime.strptime(data_doc, '%Y-%m-%d') if data_doc else None,
+                nome_arquivo=filename,
+                caminho=caminho
+            ))
 
-            db.session.add(familiar)
-            db.session.commit()  # necessário para obter ID
-
-            # =========================
-            # CONTATO DO FAMILIAR
-            # =========================
-            if request.form.get('familiar_telefone') or request.form.get('familiar_celular') or request.form.get('familiar_email'):
-                contato_familiar = Contato(
-                    familiar_id=familiar.id,
-                    telefone=request.form.get('familiar_telefone'),
-                    celular=request.form.get('familiar_celular'),
-                    email=request.form.get('familiar_email')
-                )
-                db.session.add(contato_familiar)
-
-        # =========================
-        # COMMIT FINAL
-        # =========================
         db.session.commit()
-
-        return redirect('/')
+        return redirect('/macons')
 
     return render_template('cadastro.html')
 
+
 # =========================
-# EDITAR
+# EDITAR MAÇOM
 # =========================
 @main.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar(id):
@@ -146,29 +119,119 @@ def editar(id):
         pessoa.data_nascimento = request.form.get('data_nascimento')
 
         db.session.commit()
-        return redirect('/')
+        return redirect('/macons')
 
     return render_template('editar.html', pessoa=pessoa)
 
+
 # =========================
-# EXCLUIR
+# EXCLUIR MAÇOM
 # =========================
 @main.route('/excluir/<int:id>')
 def excluir(id):
     pessoa = Pessoa.query.get_or_404(id)
 
-    Documento.query.filter_by(pessoa_id=id).delete()
     DadosMaconicos.query.filter_by(pessoa_id=id).delete()
     Contato.query.filter_by(pessoa_id=id).delete()
     Endereco.query.filter_by(pessoa_id=id).delete()
-
-    familiares = Familiar.query.filter_by(pessoa_id=id).all()
-    for f in familiares:
-        Contato.query.filter_by(familiar_id=f.id).delete()
-        db.session.delete(f)
+    DocumentoArquivo.query.filter_by(pessoa_id=id).delete()
 
     db.session.delete(pessoa)
     db.session.commit()
 
-    return redirect('/')
+    return redirect('/macons')
 
+
+# =========================
+# CADASTRO CANDIDATO
+# =========================
+@main.route('/candidato', methods=['GET', 'POST'])
+def candidato():
+    if request.method == 'POST':
+
+        candidato = Candidato(
+            nome=request.form.get('nome'),
+            cpf=request.form.get('cpf'),
+            rg=request.form.get('rg'),
+            titulo=request.form.get('titulo'),
+            data_candidatura=request.form.get('data_candidatura'),
+            situacao=request.form.get('situacao')
+        )
+
+        db.session.add(candidato)
+        db.session.commit()
+
+        # CONTATO
+        if request.form.get('telefone'):
+            db.session.add(Contato(
+                candidato_id=candidato.id,
+                telefone=request.form.get('telefone'),
+                celular=request.form.get('celular'),
+                email=request.form.get('email')
+            ))
+
+        # ENDEREÇO
+        if request.form.get('cep'):
+            db.session.add(Endereco(
+                candidato_id=candidato.id,
+                cep=request.form.get('cep'),
+                rua=request.form.get('rua'),
+                numero=request.form.get('numero'),
+                bairro=request.form.get('bairro'),
+                cidade=request.form.get('cidade'),
+                estado=request.form.get('estado'),
+                pais=request.form.get('pais')
+            ))
+
+        # 📄 DOCUMENTO (UPLOAD)
+        file = request.files.get('arquivo')
+
+        if file and file.filename:
+            filename = secure_filename(file.filename)
+
+            pasta = os.path.join(current_app.config['UPLOAD_FOLDER'], 'candidatos')
+            os.makedirs(pasta, exist_ok=True)
+
+            caminho = os.path.join(pasta, filename)
+            file.save(caminho)
+
+            data_doc = request.form.get('doc_data')
+
+            db.session.add(DocumentoArquivo(
+                candidato_id=candidato.id,
+                nome=request.form.get('doc_nome'),
+                data_documento=datetime.strptime(data_doc, '%Y-%m-%d') if data_doc else None,
+                nome_arquivo=filename,
+                caminho=caminho
+            ))
+
+        db.session.commit()
+        return redirect('/candidatos')
+
+    return render_template('candidato.html')
+
+
+# =========================
+# LISTA CANDIDATOS
+# =========================
+@main.route('/candidatos')
+def lista_candidatos():
+    candidatos = Candidato.query.all()
+    return render_template('candidatos.html', candidatos=candidatos)
+
+
+# =========================
+# EXCLUIR CANDIDATO
+# =========================
+@main.route('/excluir-candidato/<int:id>')
+def excluir_candidato(id):
+    candidato = Candidato.query.get_or_404(id)
+
+    Contato.query.filter_by(candidato_id=id).delete()
+    Endereco.query.filter_by(candidato_id=id).delete()
+    DocumentoArquivo.query.filter_by(candidato_id=id).delete()
+
+    db.session.delete(candidato)
+    db.session.commit()
+
+    return redirect('/candidatos')
