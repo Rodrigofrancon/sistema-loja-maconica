@@ -114,7 +114,7 @@
 
 <div id="contatos-container">
 
-<div class="row mb-2">
+<div class="row mb-2 align-items-center">
 
 <div class="col-md-3">
 <input name="telefone[]" class="form-control" placeholder="Telefone">
@@ -128,8 +128,13 @@
 <input name="whatsapp[]" class="form-control" placeholder="WhatsApp">
 </div>
 
-<div class="col-md-3">
+<div class="col-md-2">
 <input name="email[]" class="form-control" placeholder="Email">
+</div>
+
+<div class="col-md-1 text-center">
+<input type="radio" name="contato_principal" value="0">
+<small>Principal</small>
 </div>
 
 </div>
@@ -374,7 +379,13 @@
 
 </div>
 
-<button class="btn btn-success mt-3">Salvar</button>
+<div class="d-flex gap-2 mt-3">
+    <button class="btn btn-success">Salvar</button>
+
+    <a href="/macons" class="btn btn-secondary">
+        Voltar
+    </a>
+</div>
 
 </form>
 
@@ -436,21 +447,34 @@ function addCargo() {
     </div>
     `);
 }
+<script>
 function addContato() {
-    document.getElementById('contatos-container').insertAdjacentHTML('beforeend', `
-    <div class="row mb-2">
+    const container = document.getElementById('contatos-container');
+    const index = container.children.length;
+
+    container.insertAdjacentHTML('beforeend', `
+    <div class="row mb-2 align-items-center">
+
         <div class="col-md-3">
             <input name="telefone[]" class="form-control" placeholder="Telefone">
         </div>
+
         <div class="col-md-3">
             <input name="celular[]" class="form-control" placeholder="Celular">
         </div>
+
         <div class="col-md-3">
             <input name="whatsapp[]" class="form-control" placeholder="WhatsApp">
         </div>
-        <div class="col-md-3">
+
+        <div class="col-md-2">
             <input name="email[]" class="form-control" placeholder="Email">
         </div>
+
+        <div class="col-md-1 text-center">
+            <input type="radio" name="contato_principal" value="${index}">
+        </div>
+
     </div>
     `);
 }
