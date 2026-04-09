@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3>📁 Documentos</h3>
+
+<table class="table table-bordered">
+<thead class="table-dark">
+<tr>
+<th>Nome</th>
+<th>Data</th>
+<th>Ação</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for doc in documentos %}
+<tr>
+<td>{{ doc.nome }}</td>
+<td>{{ doc.data_documento }}</td>
+<td>
+    <a href="/download/{{ doc.id }}" class="btn btn-success btn-sm">
+        ⬇ Download
+    </a>
+</td>
+</tr>
+{% else %}
+<tr>
+<td colspan="3" class="text-center">Nenhum arquivo</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+<a href="/macons" class="btn btn-secondary">Voltar</a>
+
+{% endblock %}

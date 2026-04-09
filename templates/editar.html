@@ -2,21 +2,191 @@
 
 {% block content %}
 
-<h2>Editar Maçom</h2>
+<h2 class="mb-3">Editar Maçom</h2>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
 
+<ul class="nav nav-tabs">
+
+<li class="nav-item">
+<button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#dados">Dados</button>
+</li>
+
+<li class="nav-item">
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#contato">Contato</button>
+</li>
+
+<li class="nav-item">
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#endereco">Endereço</button>
+</li>
+
+<li class="nav-item">
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#documentos_dados">Documentos</button>
+</li>
+
+<li class="nav-item">
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#maconico">Maçônico</button>
+</li>
+
+</ul>
+
+<div class="tab-content mt-3">
+
+<!-- ========================= -->
+<!-- DADOS -->
+<!-- ========================= -->
+<div class="tab-pane fade show active" id="dados">
+<div class="row">
+
+<div class="col-md-6">
 <label>Nome</label>
-<input name="nome" class="form-control mb-2" value="{{ pessoa.nome }}">
+<input name="nome" class="form-control mb-3" value="{{ pessoa.nome }}">
+</div>
 
+<div class="col-md-3">
 <label>CIM</label>
-<input name="cim" class="form-control mb-2" value="{{ pessoa.cim }}">
+<input name="cim" class="form-control mb-3" value="{{ pessoa.cim }}">
+</div>
 
+<div class="col-md-3">
 <label>Data Nascimento</label>
-<input name="data_nascimento" class="form-control mb-2" value="{{ pessoa.data_nascimento }}">
+<input type="date" name="data_nascimento" class="form-control mb-3" value="{{ pessoa.data_nascimento }}">
+</div>
 
-<button class="btn btn-success">Salvar</button>
-<a href="/" class="btn btn-secondary">Voltar</a>
+<div class="col-md-4">
+<label>Naturalidade</label>
+<input name="naturalidade" class="form-control mb-3" value="{{ pessoa.naturalidade }}">
+</div>
+
+<div class="col-md-4">
+<label>Nacionalidade</label>
+<input name="nacionalidade" class="form-control mb-3" value="{{ pessoa.nacionalidade }}">
+</div>
+
+<div class="col-md-4">
+<label>Estado Civil</label>
+<input name="estado_civil" class="form-control mb-3" value="{{ pessoa.estado_civil }}">
+</div>
+
+<div class="col-md-4">
+<label>Sexo</label>
+<input name="sexo" class="form-control mb-3" value="{{ pessoa.sexo }}">
+</div>
+
+<div class="col-md-4">
+<label>Pai</label>
+<input name="nome_pai" class="form-control mb-3" value="{{ pessoa.nome_pai }}">
+</div>
+
+<div class="col-md-4">
+<label>Mãe</label>
+<input name="nome_mae" class="form-control mb-3" value="{{ pessoa.nome_mae }}">
+</div>
+
+<div class="col-md-4">
+<label>Escolaridade</label>
+<input name="escolaridade" class="form-control mb-3" value="{{ pessoa.escolaridade }}">
+</div>
+
+<div class="col-md-4">
+<label>Cônjuge</label>
+<input name="conjuge" class="form-control mb-3" value="{{ pessoa.conjuge }}">
+</div>
+
+<div class="col-md-4">
+<label>Data Casamento</label>
+<input type="date" name="data_casamento" class="form-control mb-3" value="{{ pessoa.data_casamento }}">
+</div>
+
+</div>
+</div>
+
+<!-- ========================= -->
+<!-- CONTATO -->
+<!-- ========================= -->
+<div class="tab-pane fade" id="contato">
+
+{% set c = pessoa.contatos[0] if pessoa.contatos else None %}
+
+<label>Telefone</label>
+<input name="telefone" class="form-control mb-2" value="{{ c.telefone if c }}">
+
+<label>Celular</label>
+<input name="celular" class="form-control mb-2" value="{{ c.celular if c }}">
+
+<label>Email</label>
+<input name="email" class="form-control mb-2" value="{{ c.email if c }}">
+
+</div>
+
+<!-- ========================= -->
+<!-- ENDEREÇO -->
+<!-- ========================= -->
+<div class="tab-pane fade" id="endereco">
+
+{% set e = pessoa.enderecos[0] if pessoa.enderecos else None %}
+
+<label>CEP</label>
+<input name="cep" class="form-control mb-2" value="{{ e.cep if e }}">
+
+<label>Rua</label>
+<input name="rua" class="form-control mb-2" value="{{ e.rua if e }}">
+
+<label>Número</label>
+<input name="numero" class="form-control mb-2" value="{{ e.numero if e }}">
+
+<label>Bairro</label>
+<input name="bairro" class="form-control mb-2" value="{{ e.bairro if e }}">
+
+<label>Cidade</label>
+<input name="cidade" class="form-control mb-2" value="{{ e.cidade if e }}">
+
+<label>Estado</label>
+<input name="estado" class="form-control mb-2" value="{{ e.estado if e }}">
+
+<label>País</label>
+<input name="pais" class="form-control mb-2" value="{{ e.pais if e else 'Brasil' }}">
+
+</div>
+
+<!-- ========================= -->
+<!-- DOCUMENTOS -->
+<!-- ========================= -->
+<div class="tab-pane fade" id="documentos_dados">
+
+<label>CPF</label>
+<input name="cpf" class="form-control mb-2" value="{{ pessoa.cpf }}">
+
+<label>RG</label>
+<input name="rg" class="form-control mb-2" value="{{ pessoa.rg }}">
+
+<label>Título</label>
+<input name="titulo" class="form-control mb-2" value="{{ pessoa.titulo }}">
+
+</div>
+
+<!-- ========================= -->
+<!-- MAÇÔNICO -->
+<!-- ========================= -->
+<div class="tab-pane fade" id="maconico">
+
+{% set m = pessoa.maconico %}
+
+<label>Situação</label>
+<input name="situacao" class="form-control mb-2" value="{{ m.situacao if m }}">
+
+<label>Forma</label>
+<input name="forma" class="form-control mb-2" value="{{ m.forma_admissao if m }}">
+
+<label>Data Admissão</label>
+<input name="data_admissao" class="form-control mb-2" value="{{ m.data_admissao if m }}">
+
+</div>
+
+</div>
+
+<button class="btn btn-success mt-3">Salvar</button>
+<a href="/macons" class="btn btn-secondary mt-3">Voltar</a>
 
 </form>
 

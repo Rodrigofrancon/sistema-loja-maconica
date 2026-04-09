@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3>Documentos - {{ candidato.nome }}</h3>
+
+<table class="table table-bordered mt-3">
+<thead>
+<tr>
+<th>Nome</th>
+<th>Data</th>
+<th>Arquivo</th>
+<th>Ações</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for doc in candidato.documentos %}
+<tr>
+
+<td>{{ doc.nome }}</td>
+
+<td>
+{% if doc.data_documento %}
+{{ doc.data_documento.strftime('%d/%m/%Y') }}
+{% else %}
+-
+{% endif %}
+</td>
+
+<td>{{ doc.nome_arquivo }}</td>
+
+<td>
+<a href="/download/{{ doc.id }}" class="btn btn-success btn-sm">
+⬇ Download
+</a>
+</td>
+
+</tr>
+{% else %}
+<tr>
+<td colspan="4">Nenhum documento</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+<a href="/candidatos" class="btn btn-secondary">Voltar</a>
+
+{% endblock %}

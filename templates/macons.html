@@ -8,9 +8,15 @@
         <small class="text-muted">Gestão de membros da loja</small>
     </div>
 
-    <a href="/cadastro" class="btn btn-primary">
-        + Novo Cadastro
-    </a>
+    <div class="d-flex gap-2">
+        <a href="/" class="btn btn-secondary">
+            ⬅ Voltar
+        </a>
+
+        <a href="/cadastro" class="btn btn-primary">
+            + Novo Cadastro
+        </a>
+    </div>
 </div>
 
 <div class="card shadow-sm border-0">
@@ -26,7 +32,7 @@
 <th>Contato</th>
 <th>Cidade</th>
 <th>Arquivos</th>
-<th style="width: 200px;">Ações</th>
+<th style="width: 220px;">Ações</th>
 </tr>
 </thead>
 
@@ -56,8 +62,10 @@
 </td>
 
 <td class="text-center">
-    {% if p.contatos and p.contatos[0].celular %}
-        <small>{{ p.contatos[0].celular }}</small>
+    {% if p.contatos %}
+        {% for c in p.contatos %}
+            <div><small>{{ c.celular or c.telefone }}</small></div>
+        {% endfor %}
     {% else %}
         <span class="text-muted">-</span>
     {% endif %}
@@ -83,26 +91,31 @@
 </td>
 
 <td>
-
 <div class="d-flex justify-content-center gap-1 flex-wrap">
 
+    <!-- EDITAR -->
     <a href="/editar/{{ p.id }}" 
-       class="btn btn-warning btn-sm">       
+       class="btn btn-warning btn-sm"
+       title="Editar">
+       ✏️
     </a>
 
+    <!-- EXCLUIR -->
     <a href="/excluir/{{ p.id }}"
        class="btn btn-danger btn-sm"
-       onclick="return confirm('Tem certeza que deseja excluir?')">
+       onclick="return confirm('Tem certeza que deseja excluir?')"
+       title="Excluir">
        🗑
     </a>
 
-    <a href="/documentos/{{ p.id }}"
+    <!-- DOCUMENTOS -->
+    <a href="/documentos/pessoa/{{ p.id }}"
        class="btn btn-secondary btn-sm"
-       title="Ver documentos">
+       title="Ver arquivos">
+       📁
     </a>
 
 </div>
-
 </td>
 
 </tr>

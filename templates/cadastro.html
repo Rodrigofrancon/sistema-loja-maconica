@@ -6,9 +6,6 @@
 
 <form method="POST" enctype="multipart/form-data">
 
-<!-- ========================= -->
-<!-- TABS -->
-<!-- ========================= -->
 <ul class="nav nav-tabs">
 
 <li class="nav-item">
@@ -24,19 +21,15 @@
 </li>
 
 <li class="nav-item">
-<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#documentos_dados">
-Documentos
-</button>
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#documentos_dados">Documentos</button>
 </li>
 
 <li class="nav-item">
-<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#arquivos">
-Pasta de Arquivos
-</button>
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#arquivos">Pasta de Arquivos</button>
 </li>
 
 <li class="nav-item">
-<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#maconico">Maçônico</button>
+<button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#maconico">Dados Maçônico</button>
 </li>
 
 <li class="nav-item">
@@ -47,9 +40,7 @@ Pasta de Arquivos
 
 <div class="tab-content mt-3">
 
-<!-- ========================= -->
 <!-- DADOS -->
-<!-- ========================= -->
 <div class="tab-pane fade show active" id="dados">
 <div class="row">
 
@@ -116,9 +107,84 @@ Pasta de Arquivos
 </div>
 </div>
 
-<!-- ========================= -->
+<!-- CONTATO -->
+<div class="tab-pane fade" id="contato">
+
+<h5>Contatos</h5>
+
+<div id="contatos-container">
+
+<div class="row mb-2">
+
+<div class="col-md-3">
+<input name="telefone[]" class="form-control" placeholder="Telefone">
+</div>
+
+<div class="col-md-3">
+<input name="celular[]" class="form-control" placeholder="Celular">
+</div>
+
+<div class="col-md-3">
+<input name="whatsapp[]" class="form-control" placeholder="WhatsApp">
+</div>
+
+<div class="col-md-3">
+<input name="email[]" class="form-control" placeholder="Email">
+</div>
+
+</div>
+
+</div>
+
+<button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addContato()">
++ Adicionar Contato
+</button>
+
+</div>
+
+<!-- ENDEREÇO -->
+<div class="tab-pane fade" id="endereco">
+<div class="row">
+
+<div class="col-md-3">
+<label>CEP</label>
+<input id="cep" name="cep" class="form-control mb-3">
+</div>
+
+<div class="col-md-6">
+<label>Rua</label>
+<input id="rua" name="rua" class="form-control mb-3">
+</div>
+
+<div class="col-md-3">
+<label>Número</label>
+<input name="numero" class="form-control mb-3">
+</div>
+
+<div class="col-md-4">
+<label>Bairro</label>
+<input id="bairro" name="bairro" class="form-control mb-3">
+</div>
+
+<div class="col-md-4">
+<label>Cidade</label>
+<input id="cidade" name="cidade" class="form-control mb-3">
+</div>
+
+<div class="col-md-2">
+<label>Estado</label>
+<input id="estado" name="estado" class="form-control mb-3">
+</div>
+
+<div class="col-md-2">
+<label>País</label>
+<input name="pais" value="Brasil" class="form-control mb-3">
+</div>
+
+</div>
+</div>
+
 <!-- DOCUMENTOS -->
-<!-- ========================= -->
 <div class="tab-pane fade" id="documentos_dados">
 <div class="card mt-3">
 <div class="card-body">
@@ -126,6 +192,7 @@ Pasta de Arquivos
 <h5>Documentos</h5>
 
 <div class="row">
+
 <div class="col-md-4">
 <label>CPF</label>
 <input name="cpf" class="form-control mb-3">
@@ -140,15 +207,14 @@ Pasta de Arquivos
 <label>Título</label>
 <input name="titulo" class="form-control mb-3">
 </div>
+
 </div>
 
 </div>
 </div>
 </div>
 
-<!-- ========================= -->
-<!-- 📁 ARQUIVOS -->
-<!-- ========================= -->
+<!-- ARQUIVOS -->
 <div class="tab-pane fade" id="arquivos">
 <div class="card mt-3">
 <div class="card-body">
@@ -156,7 +222,6 @@ Pasta de Arquivos
 <h5>Pasta de Arquivos</h5>
 
 <div id="arquivos-container">
-
 <div class="row mb-2">
 <div class="col-md-5">
 <input name="doc_nome[]" class="form-control" placeholder="Nome do documento">
@@ -168,18 +233,146 @@ Pasta de Arquivos
 <input type="file" name="arquivo[]" class="form-control">
 </div>
 </div>
-
 </div>
 
-<button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addArquivo()">
-+ Adicionar Arquivo
-</button>
+<button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addArquivo()">+ Adicionar Arquivo</button>
 
 </div>
 </div>
 </div>
 
-</div> <!-- FECHA TAB-CONTENT -->
+<!-- MAÇÔNICO -->
+<div class="tab-pane fade" id="maconico">
+<div class="card mt-3">
+<div class="card-body">
+
+<h5>Dados Maçônicos</h5>
+
+<div class="row">
+
+<div class="col-md-4">
+<label>Situação</label>
+<select name="situacao" class="form-select mb-3">
+<option value="">Selecione...</option>
+<option value="REGULAR_ATIVO">Regular Ativo</option>
+<option value="REGULAR_INATIVO">Regular Inativo</option>
+<option value="ORIENTE_ETERNO">Oriente Eterno</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<label>Forma</label>
+<select name="forma" class="form-select mb-3">
+<option value="">Selecione...</option>
+<option value="INICIACAO">Iniciação</option>
+<option value="FILIACAO">Filiação</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<label>Grau</label>
+<select name="grau" class="form-select mb-3">
+<option value="">Selecione...</option>
+<option value="1">Aprendiz</option>
+<option value="2">Companheiro</option>
+<option value="3">Mestre</option>
+<option value="3">Mestre Instalado</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<label>Data Admissão</label>
+<input type="date" name="data_admissao" class="form-control mb-3">
+</div>
+
+<div class="col-md-4">
+<label>Data de Saída</label>
+<input type="date" name="data_saida" class="form-control mb-3">
+</div>
+
+<div class="col-md-4">
+<label>Loja de Origem</label>
+<input name="loja_origem" class="form-control mb-3">
+</div>
+
+</div>
+
+<hr>
+
+<h6>Cargos (Histórico)</h6>
+
+<div id="cargos-container">
+<div class="row mb-2">
+<div class="col-md-4">
+<select name="cargo_nome[]" class="form-select">
+    <option value="">Selecione...</option>
+    <option value="VENERAVEL_MESTRE">Venerável Mestre</option>
+    <option value="PRIMEIRO_VIGILANTE">1º Vigilante</option>
+    <option value="SEGUNDO_VIGILANTE">2º Vigilante</option>
+    <option value="ORADOR">Orador</option>
+    <option value="SECRETARIO">Secretário</option>
+    <option value="TESOUREIRO">Tesoureiro</option>
+    <option value="CHANCELER">Chanceler</option>
+    <option value="MESTRE_DE_CERIMONIAS">Mestre de Cerimônias</option>
+    <option value="HOSPITALEIRO">Hospitaleiro</option>
+    <option value="COBRIDOR">Cobridor</option>
+    <option value="OUTRO">Outro</option>
+</select>
+</div>
+<div class="col-md-4">
+<input type="date" name="cargo_inicio[]" class="form-control">
+</div>
+<div class="col-md-4">
+<input type="date" name="cargo_fim[]" class="form-control">
+</div>
+</div>
+</div>
+
+<button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addCargo()">+ Adicionar Cargo</button>
+
+</div>
+</div>
+</div>
+
+<!-- FAMILIARES -->
+<div class="tab-pane fade" id="familiares">
+<div class="card mt-3">
+<div class="card-body">
+
+<h5>Familiares</h5>
+
+<div id="familiares-container">
+<div class="row mb-2">
+<div class="col-md-3">
+<input name="familiar_nome[]" class="form-control" placeholder="Nome">
+</div>
+<div class="col-md-2">
+<input name="familiar_cpf[]" class="form-control" placeholder="CPF">
+</div>
+<div class="col-md-2">
+<input name="familiar_rg[]" class="form-control" placeholder="RG">
+</div>
+<div class="col-md-2">
+<input type="date" name="familiar_nascimento[]" class="form-control">
+</div>
+<div class="col-md-3">
+<select name="familiar_parentesco[]" class="form-control">
+<option value="">Parentesco</option>
+<option value="FILHO">Filho</option>
+<option value="ESPOSA">Esposa</option>
+<option value="OUTRO">Outro</option>
+</select>
+</div>
+</div>
+</div>
+
+<button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addFamiliar()">+ Adicionar Familiar</button>
+
+</div>
+</div>
+</div>
+
+</div>
 
 <button class="btn btn-success mt-3">Salvar</button>
 
@@ -187,23 +380,79 @@ Pasta de Arquivos
 
 <script>
 function addArquivo() {
-    const container = document.getElementById('arquivos-container');
-
-    const html = `
+    document.getElementById('arquivos-container').insertAdjacentHTML('beforeend', `
     <div class="row mb-2">
-        <div class="col-md-5">
-            <input name="doc_nome[]" class="form-control" placeholder="Nome do documento">
-        </div>
+        <div class="col-md-5"><input name="doc_nome[]" class="form-control"></div>
+        <div class="col-md-3"><input type="date" name="doc_data[]" class="form-control"></div>
+        <div class="col-md-4"><input type="file" name="arquivo[]" class="form-control"></div>
+    </div>`);
+}
+
+function addFamiliar() {
+    document.getElementById('familiares-container').insertAdjacentHTML('beforeend', `
+    <div class="row mb-2">
+        <div class="col-md-3"><input name="familiar_nome[]" class="form-control"></div>
+        <div class="col-md-2"><input name="familiar_cpf[]" class="form-control"></div>
+        <div class="col-md-2"><input name="familiar_rg[]" class="form-control"></div>
+        <div class="col-md-2"><input type="date" name="familiar_nascimento[]" class="form-control"></div>
         <div class="col-md-3">
-            <input type="date" name="doc_data[]" class="form-control">
+            <select name="familiar_parentesco[]" class="form-control">
+                <option value="">Parentesco</option>
+                <option value="FILHO">Filho</option>
+                <option value="ESPOSA">Esposa</option>
+                <option value="OUTRO">Outro</option>
+            </select>
         </div>
+    </div>`);
+}
+
+function addCargo() {
+    document.getElementById('cargos-container').insertAdjacentHTML('beforeend', `
+    <div class="row mb-2">
         <div class="col-md-4">
-            <input type="file" name="arquivo[]" class="form-control">
+            <select name="cargo_nome[]" class="form-select">
+                <option value="">Selecione...</option>
+                <option value="VENERAVEL_MESTRE">Venerável Mestre</option>
+                <option value="PRIMEIRO_VIGILANTE">1º Vigilante</option>
+                <option value="SEGUNDO_VIGILANTE">2º Vigilante</option>
+                <option value="ORADOR">Orador</option>
+                <option value="SECRETARIO">Secretário</option>
+                <option value="TESOUREIRO">Tesoureiro</option>
+                <option value="CHANCELER">Chanceler</option>
+                <option value="MESTRE_DE_CERIMONIAS">Mestre de Cerimônias</option>
+                <option value="HOSPITALEIRO">Hospitaleiro</option>
+                <option value="COBRIDOR">Cobridor</option>
+                <option value="OUTRO">Outro</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <input type="date" name="cargo_inicio[]" class="form-control">
+        </div>
+
+        <div class="col-md-4">
+            <input type="date" name="cargo_fim[]" class="form-control">
         </div>
     </div>
-    `;
-
-    container.insertAdjacentHTML('beforeend', html);
+    `);
+}
+function addContato() {
+    document.getElementById('contatos-container').insertAdjacentHTML('beforeend', `
+    <div class="row mb-2">
+        <div class="col-md-3">
+            <input name="telefone[]" class="form-control" placeholder="Telefone">
+        </div>
+        <div class="col-md-3">
+            <input name="celular[]" class="form-control" placeholder="Celular">
+        </div>
+        <div class="col-md-3">
+            <input name="whatsapp[]" class="form-control" placeholder="WhatsApp">
+        </div>
+        <div class="col-md-3">
+            <input name="email[]" class="form-control" placeholder="Email">
+        </div>
+    </div>
+    `);
 }
 </script>
 

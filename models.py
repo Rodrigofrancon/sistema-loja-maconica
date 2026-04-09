@@ -11,6 +11,9 @@ class Pessoa(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(150), nullable=False)
     cim = db.Column(db.String(50))
+    cpf = db.Column(db.String(20))
+    rg = db.Column(db.String(20))
+    titulo = db.Column(db.String(20))
     data_nascimento = db.Column(db.String(20))
     naturalidade = db.Column(db.String(100))
     nacionalidade = db.Column(db.String(100))
@@ -27,6 +30,7 @@ class Pessoa(db.Model):
     contatos = db.relationship('Contato', backref='pessoa', lazy=True)
     familiares = db.relationship('Familiar', backref='pessoa', lazy=True)
     documentos = db.relationship('DocumentoArquivo', backref='pessoa', lazy=True)
+    cargos = db.relationship('CargoMaconico', backref='pessoa', lazy=True)
 
 
 # =========================
@@ -41,7 +45,20 @@ class DadosMaconicos(db.Model):
     situacao = db.Column(db.String(50))
     forma_admissao = db.Column(db.String(50))
     data_admissao = db.Column(db.String(20))
+    grau = db.Column(db.String(20))
+    loja_origem = db.Column(db.String(150))
+    data_saida = db.Column(db.String(20))
+    motivo_saida = db.Column(db.String(200))
+    
+class CargoMaconico(db.Model):
+    __tablename__ = 'cargo_maconico'
 
+    id = db.Column(db.Integer, primary_key=True)
+    pessoa_id = db.Column(db.Integer, db.ForeignKey('pessoa.id'), nullable=False)
+
+    cargo = db.Column(db.String(100))
+    data_inicio = db.Column(db.String(20))
+    data_fim = db.Column(db.String(20))
 
 # =========================
 # Familiares
@@ -78,6 +95,7 @@ class Contato(db.Model):
     celular = db.Column(db.String(20))
     whatsapp = db.Column(db.String(20))
     email = db.Column(db.String(100))
+    principal = db.Column(db.Boolean, default=False)
 
 
 # =========================
