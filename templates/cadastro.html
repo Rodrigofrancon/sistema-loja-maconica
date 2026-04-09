@@ -341,41 +341,66 @@
 
 <!-- FAMILIARES -->
 <div class="tab-pane fade" id="familiares">
-<div class="card mt-3">
-<div class="card-body">
 
 <h5>Familiares</h5>
 
 <div id="familiares-container">
-<div class="row mb-2">
-<div class="col-md-3">
-<input name="familiar_nome[]" class="form-control" placeholder="Nome">
+
+<div class="border rounded p-3 mb-3">
+
+<div class="row">
+
+<div class="col-md-4">
+<input name="familiar_nome[]" class="form-control mb-2" placeholder="Nome">
 </div>
+
 <div class="col-md-2">
-<input name="familiar_cpf[]" class="form-control" placeholder="CPF">
+<input name="familiar_cpf[]" class="form-control mb-2" placeholder="CPF">
 </div>
+
 <div class="col-md-2">
-<input name="familiar_rg[]" class="form-control" placeholder="RG">
+<input name="familiar_rg[]" class="form-control mb-2" placeholder="RG">
 </div>
+
 <div class="col-md-2">
-<input type="date" name="familiar_nascimento[]" class="form-control">
-</div>
-<div class="col-md-3">
-<select name="familiar_parentesco[]" class="form-control">
+<select name="familiar_parentesco[]" class="form-select mb-2">
 <option value="">Parentesco</option>
-<option value="FILHO">Filho</option>
 <option value="ESPOSA">Esposa</option>
-<option value="OUTRO">Outro</option>
+<option value="FILHO">Filho</option>
+<option value="FILHA">Filha</option>
 </select>
 </div>
-</div>
+
+<div class="col-md-2">
+<input type="date" name="familiar_nascimento[]" class="form-control mb-2">
 </div>
 
-<button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addFamiliar()">+ Adicionar Familiar</button>
+</div>
+
+<!-- 📞 CONTATO DO FAMILIAR -->
+<div class="row mt-2">
+
+<div class="col-md-4">
+<input name="familiar_telefone[]" class="form-control mb-2" placeholder="Telefone">
+</div>
+
+<div class="col-md-4">
+<input name="familiar_celular[]" class="form-control mb-2" placeholder="Celular">
+</div>
+
+<div class="col-md-4">
+<input name="familiar_email[]" class="form-control mb-2" placeholder="Email">
+</div>
 
 </div>
+
 </div>
+
 </div>
+
+<button type="button" class="btn btn-outline-primary btn-sm" onclick="addFamiliar()">
++ Adicionar Familiar
+</button>
 
 </div>
 
@@ -473,6 +498,56 @@ function addContato() {
 
         <div class="col-md-1 text-center">
             <input type="radio" name="contato_principal" value="${index}">
+        </div>
+
+    </div>
+    `);
+}
+
+<script>
+function addFamiliar() {
+    document.getElementById('familiares-container').insertAdjacentHTML('beforeend', `
+    <div class="border rounded p-3 mb-3">
+
+        <div class="row">
+            <div class="col-md-4">
+                <input name="familiar_nome[]" class="form-control mb-2" placeholder="Nome">
+            </div>
+
+            <div class="col-md-2">
+                <input name="familiar_cpf[]" class="form-control mb-2" placeholder="CPF">
+            </div>
+
+            <div class="col-md-2">
+                <input name="familiar_rg[]" class="form-control mb-2" placeholder="RG">
+            </div>
+
+            <div class="col-md-2">
+                <select name="familiar_parentesco[]" class="form-select mb-2">
+                    <option value="">Parentesco</option>
+                    <option value="ESPOSA">Esposa</option>
+                    <option value="FILHO">Filho</option>
+                    <option value="FILHA">Filha</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <input type="date" name="familiar_nascimento[]" class="form-control mb-2">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-4">
+                <input name="familiar_telefone[]" class="form-control mb-2" placeholder="Telefone">
+            </div>
+
+            <div class="col-md-4">
+                <input name="familiar_celular[]" class="form-control mb-2" placeholder="Celular">
+            </div>
+
+            <div class="col-md-4">
+                <input name="familiar_email[]" class="form-control mb-2" placeholder="Email">
+            </div>
         </div>
 
     </div>
