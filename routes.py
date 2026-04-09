@@ -140,6 +140,112 @@ def cadastro():
 
     return render_template('cadastro.html')
 
+# =========================
+# CADASTRO CANDIDATO
+# =========================
+@main.route('/candidato', methods=['GET', 'POST'])
+def candidato():
+
+    if request.method == 'POST':
+
+        candidato = Candidato(
+            nome=request.form.get('nome'),
+            cpf=request.form.get('cpf'),
+            rg=request.form.get('rg'),
+            titulo=request.form.get('titulo'),
+            data_candidatura=request.form.get('data_candidatura'),
+            situacao=request.form.get('situacao')
+        )
+
+        db.session.add(candidato)
+        db.session.commit()
+
+        # =========================
+        # CONTATO
+        # =========================
+        if request.form.get('telefone') or request.form.get('celular'):
+            db.session.add(Contato(
+                candidato_id=candidato.id,
+                telefone=request.form.get('telefone'),
+                celular=request.form.get('celular'),
+                email=request.form.get('email')
+            ))
+
+        # =========================
+        # ENDEREÇO
+        # =========================
+        if request.form.get('cep'):
+            db.session.add(Endereco(
+                candidato_id=candidato.id,
+                cep=request.form.get('cep'),
+                rua=request.form.get('rua'),
+                numero=request.form.get('numero'),
+                bairro=request.form.get('bairro'),
+                cidade=request.form.get('cidade'),
+                estado=request.form.get('estado'),
+                pais=request.form.get('pais')
+            ))
+
+        db.session.commit()
+
+        return redirect('/candidatos')
+
+    return render_template('candidato.html')
+
+# =========================
+# LISTA CANDIDATOS
+# =========================
+@main.route('/candidatos')
+def candidatos():
+    candidatos = Candidato.query.all()
+    return render_template('candidatos.html', candidatos=candidatos)
+
+# =========================
+# EDITAR CANDIDATO
+# =========================
+@main.route('/editar-candidato/<int:id>', methods=['GET', 'POST'])
+def editar_candidato(id):
+    candidato = Candidato.query.get_or_404(id)
+
+    if request.method == 'POST':
+
+        # DADOS
+        candidato.nome = request.form.get('nome')
+        candidato.cpf = request.form.get('cpf')
+        candidato.rg = request.form.get('rg')
+        candidato.titulo = request.form.get('titulo')
+        candidato.data_candidatura = request.form.get('data_candidatura')
+        candidato.situacao = request.form.get('situacao')
+
+        # CONTATO (remove e recria)
+        Contato.query.filter_by(candidato_id=candidato.id).delete()
+
+        db.session.add(Contato(
+            candidato_id=candidato.id,
+            telefone=request.form.get('telefone'),
+            celular=request.form.get('celular'),
+            email=request.form.get('email')
+        ))
+
+        # ENDEREÇO (remove e recria)
+        Endereco.query.filter_by(candidato_id=candidato.id).delete()
+
+        db.session.add(Endereco(
+            candidato_id=candidato.id,
+            cep=request.form.get('cep'),
+            rua=request.form.get('rua'),
+            numero=request.form.get('numero'),
+            bairro=request.form.get('bairro'),
+            cidade=request.form.get('cidade'),
+            estado=request.form.get('estado'),
+            pais=request.form.get('pais')
+        ))
+
+        db.session.commit()
+
+        return redirect('/candidatos')
+
+    return render_template('editar_candidato.html', candidato=candidato)
 
 # =========================
 # EDITAR MAÇOM

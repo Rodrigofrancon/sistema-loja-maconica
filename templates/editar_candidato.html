@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Editar Candidato</h2>
+
+<form method="POST">
+
+<div class="card mb-3">
+<div class="card-body">
+
+<h5>Dados</h5>
+
+<input name="nome" class="form-control mb-2" value="{{ candidato.nome }}" placeholder="Nome">
+<input name="cpf" class="form-control mb-2" value="{{ candidato.cpf }}" placeholder="CPF">
+<input name="rg" class="form-control mb-2" value="{{ candidato.rg }}" placeholder="RG">
+<input name="titulo" class="form-control mb-2" value="{{ candidato.titulo }}" placeholder="Título">
+
+<input type="date" name="data_candidatura" class="form-control mb-2"
+       value="{{ candidato.data_candidatura }}">
+
+<select name="situacao" class="form-select mb-2">
+    <option value="EM_ANALISE" {% if candidato.situacao=='EM_ANALISE' %}selected{% endif %}>Em análise</option>
+    <option value="LIVRO_NEGRO" {% if candidato.situacao=='LIVRO_NEGRO' %}selected{% endif %}>Livro Negro</option>
+    <option value="LIVRO_AMARELO" {% if candidato.situacao=='LIVRO_AMARELO' %}selected{% endif %}>Livro Amarelo</option>
+    <option value="CANCELADO" {% if candidato.situacao=='CANCELADO' %}selected{% endif %}>Cancelado</option>
+</select>
+
+</div>
+</div>
+
+<div class="card mb-3">
+<div class="card-body">
+
+<h5>Contato</h5>
+
+<input name="telefone" class="form-control mb-2"
+value="{{ candidato.contatos[0].telefone if candidato.contatos else '' }}">
+
+<input name="celular" class="form-control mb-2"
+value="{{ candidato.contatos[0].celular if candidato.contatos else '' }}">
+
+<input name="email" class="form-control mb-2"
+value="{{ candidato.contatos[0].email if candidato.contatos else '' }}">
+
+</div>
+</div>
+
+<div class="card mb-3">
+<div class="card-body">
+
+<h5>Endereço</h5>
+
+<input name="cep" class="form-control mb-2"
+value="{{ candidato.enderecos[0].cep if candidato.enderecos else '' }}">
+
+<input name="rua" class="form-control mb-2"
+value="{{ candidato.enderecos[0].rua if candidato.enderecos else '' }}">
+
+<input name="numero" class="form-control mb-2"
+value="{{ candidato.enderecos[0].numero if candidato.enderecos else '' }}">
+
+<input name="bairro" class="form-control mb-2"
+value="{{ candidato.enderecos[0].bairro if candidato.enderecos else '' }}">
+
+<input name="cidade" class="form-control mb-2"
+value="{{ candidato.enderecos[0].cidade if candidato.enderecos else '' }}">
+
+<input name="estado" class="form-control mb-2"
+value="{{ candidato.enderecos[0].estado if candidato.enderecos else '' }}">
+
+<input name="pais" class="form-control mb-2"
+value="{{ candidato.enderecos[0].pais if candidato.enderecos else '' }}">
+
+</div>
+</div>
+
+<div class="d-flex gap-2">
+    <button class="btn btn-success">Salvar</button>
+    <a href="/candidatos" class="btn btn-secondary">Voltar</a>
+</div>
+
+</form>
+
+{% endblock %}
